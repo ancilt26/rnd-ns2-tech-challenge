@@ -1,11 +1,11 @@
-# Tech Challenge for the Fullstack Developer
+# Tech Challenge for the Full Stack Developer
 
-Tech Challenge to create a GraphQL Server with Node.js and Express.js, and frontend with sveltejs
+Tech Challenge is to create a GraphQL Server with Node.js and Express.js, and frontend with sveltejs
 
-We're providing an example server and a server that's already partially completed with devices.  You'll modify the second server for your tech challenge.
+We'll provide an example server and a server that's already partially completed with devices.  You'll modify the second server for your tech challenge.
 
 ### Question 1
-The query below does not have a pagination; so take too long to retrieve the data; please add the pagination into the query
+The query below does not support pagination; so it takes too long to retrieve the data; please add support for pagination into the query
 ```
 query Query {
     Users{
