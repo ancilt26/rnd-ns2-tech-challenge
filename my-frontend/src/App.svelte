@@ -1,9 +1,8 @@
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
-  import Users from './lib/Users.svelte';
+    import Users from './lib/Users.svelte';
 
-const users = [
-  {
+    const users = [
+    {
                     "id": 1,
                     "username": "User1",
                     "companies": [
@@ -82,15 +81,8 @@ const users = [
 </script>
 
 <main>
-
   <h1>Harvest Tech Challenge</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
   <Users {users} />
-
 </main>
 
 <style>

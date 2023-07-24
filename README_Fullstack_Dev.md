@@ -1,4 +1,4 @@
-# Tech Challenge for the Backend
+# Tech Challenge for the Fullstack Developer
 
 Tech Challenge to create a GraphQL Server with Node.js and Express.js, and frontend with sveltejs
 
