@@ -1,4 +1,4 @@
-# This is the finished code for the Full Stack Developer Tech Challenge
+# This is the finished code for the Front End Developer Tech Challenge
 
 This Tech challenge is created initially with GraphQL server and Svelte Js. 
 
