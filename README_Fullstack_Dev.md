@@ -1,6 +1,6 @@
 # Tech Challenge for the Full Stack Developer
 
-Tech Challenge is to create a GraphQL Server with Node.js and Express.js, and frontend with sveltejs
+Tech Challenge is to create a GraphQL Server with Node.js and Express.js, and frontend with Sveltejs
 
 We'll provide an example server and a server that's already partially completed with devices.  You'll modify the second server for your tech challenge.
 

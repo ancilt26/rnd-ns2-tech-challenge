@@ -83,7 +83,3 @@ const generateRandomCompanyIds = (companies: ICompany[]): number[] => {
 export const companies: ICompany[] = generateCompanies(100);
 export const rooms: IRoom[] = generateRooms(companies);
 export const users: IUser[] = generateUsers(1000, companies);
-
-console.log(companies);
-console.log(rooms);
-console.log(users);

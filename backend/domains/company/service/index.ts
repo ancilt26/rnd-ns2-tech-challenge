@@ -1,4 +1,3 @@
-import { companies } from "repo/data";
 import { CompanyRepo } from "../../../repo/company.repo";
 import { RoomRepo } from "../../../repo/room.repo";
 import { UserRepo } from "../../../repo/user.repo";

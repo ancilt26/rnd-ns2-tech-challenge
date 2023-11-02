@@ -1,4 +1,3 @@
-import { companies } from "repo/data";
 import { CompanyService } from "../service";
 export default {
   Query: {
