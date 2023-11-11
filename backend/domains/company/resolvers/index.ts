@@ -32,8 +32,7 @@ export default {
   UserType: {
     async companies(parent: any, args: any, context: any, info: any): Promise<any> {
       const { companyIds } = parent
-      const _companyService = new CompanyService();
-      const data = await _companyService.getUserCompanies({ companyIds });
+      const data = await context.loaders.companyLoader.load(companyIds)
       return data;
     },
   }
