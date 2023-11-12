@@ -21,6 +21,12 @@ export default {
       return { data };
     },
   },
+  Mutation: {
+    createUser: async (parent: any, args: any, context: any, info: any) => {
+      const _companyService = new CompanyService()
+      return _companyService.createUser(args.username)
+    }
+  },
   CompanyType: {
     async rooms(parent: any, args: any, context: any, info: any): Promise<any> {
       const { id } = parent

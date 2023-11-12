@@ -2,7 +2,7 @@
     import { gql } from "@apollo/client/core";
     import { onMount } from "svelte";
     import Users from "./lib/Users.svelte";
-    import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+    import { client } from "./client";
 
     const GET_USERS = gql`
         query getUsers($page: Int!, $pageSize: Int!) {
@@ -26,6 +26,15 @@
             }
         }
     `;
+
+    const CREATE_USER = gql`
+        mutation CreateUser($username: String!) {
+            createUser(username: $username) {
+                id
+                username
+            }
+        }
+    `;
     let users;
     let pagination;
     let loading;
@@ -34,11 +43,6 @@
     let pageSize = 10;
 
     async function loadUsers(page, pageSize) {
-        const client = new ApolloClient({
-            uri: "http://localhost:4000/graphql",
-            cache: new InMemoryCache(),
-        });
-
         const response = await client.query({
             query: GET_USERS,
             variables: { page, pageSize },
@@ -48,6 +52,22 @@
         loading = response.loading;
         return;
     }
+
+    async function handleSubmit(e) {
+        const formData = new FormData(e.target);
+
+        try {
+            const response = await client.mutate({
+                mutation: CREATE_USER,
+                variables: { username: formData.get("username") },
+            });
+            console.log({ response });
+        } catch (e) {
+            alert("failed to create user");
+            console.log({ e });
+        }
+    }
+
     onMount(async () => loadUsers(page, pageSize));
 </script>
 
@@ -73,6 +93,11 @@
                 }
             }}>{">"}</button
         >
+        <form on:submit|preventDefault={handleSubmit}>
+            <label for="username">Username</label>
+            <input placeholder="username" id="username" name="username" />
+            <button type="submit">Create user</button>
+        </form>
     {:else}
         <p>Loading...</p>
     {/if}

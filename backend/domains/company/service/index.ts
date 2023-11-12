@@ -23,6 +23,11 @@ export class CompanyService {
     }
   }
 
+  async createUser(username: string) {
+    const user = await this._userRepo.createUser(username)
+    return user
+  }
+
   async getUserCompanies(filter: { companyIds: number[] }): Promise<any> {
     return await this._companyRepo.select(undefined, [{ fieldName: 'id', data: filter.companyIds }]);
   }

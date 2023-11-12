@@ -62,4 +62,8 @@ export default `
     Rooms(filter: RoomFilterInput): RoomsResponseType
     Users(filter: UserFilterInput, pagination: PaginationInput): UsersResponseType
   }
+
+  type Mutation {
+    createUser(username: String!): UserType
+  } 
 `;
