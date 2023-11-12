@@ -8,17 +8,17 @@ export class CompanyService {
   protected _roomRepo = new RoomRepo();
   protected _userRepo = new UserRepo();
 
-  async getUsers(filter: { username?: string }, pagination: { limit: number; offset: number }): Promise<any> {
-    const { offset, limit } = pagination;
+  async getUsers(filter: { username?: string }, pagination: { page: number; pageSize: number }): Promise<any> {
+    const { page, pageSize } = pagination;
     const result = await this._userRepo.select(filter);
 
     return {
-      data: result.slice(offset, offset + limit), 
+      data: result.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize),
       pagination: {
         totalOfRecord: result.length,
-        totalOfPage: Math.ceil(result.length / limit),
-        page: Math.floor(offset / limit) + 1,
-        pageSize: limit
+        totalOfPage: Math.ceil(result.length / pageSize),
+        page,
+        pageSize
       }
     }
   }

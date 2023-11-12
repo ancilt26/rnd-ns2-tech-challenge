@@ -1,104 +1,104 @@
 <script lang="ts">
-    import Users from './lib/Users.svelte';
+    import { gql } from "@apollo/client/core";
+    import { onMount } from "svelte";
+    import Users from "./lib/Users.svelte";
+    import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 
-    const users = [
-    {
-                    "id": 1,
-                    "username": "User1",
-                    "companies": [
-                        {
-                            "id": 10,
-                            "name": "Company 10"
-                        },
-                        {
-                            "id": 18,
-                            "name": "Company 18"
-                        },
-                        {
-                            "id": 32,
-                            "name": "Company 32"
-                        },
-                        {
-                            "id": 34,
-                            "name": "Company 34"
-                        },
-                        {
-                            "id": 69,
-                            "name": "Company 69"
-                        }
-                    ]
-                },
-                {
-                    "id": 2,
-                    "username": "User2",
-                    "companies": [
-                        {
-                            "id": 3,
-                            "name": "Company 3"
-                        },
-                        {
-                            "id": 45,
-                            "name": "Company 45"
-                        },
-                        {
-                            "id": 59,
-                            "name": "Company 59"
-                        },
-                        {
-                            "id": 71,
-                            "name": "Company 71"
-                        }
-                    ]
-                },
-                {
-                    "id": 3,
-                    "username": "User3",
-                    "companies": [
-                        {
-                            "id": 10,
-                            "name": "Company 10"
-                        },
-                        {
-                            "id": 53,
-                            "name": "Company 53"
-                        },
-                        {
-                            "id": 56,
-                            "name": "Company 56"
-                        },
-                        {
-                            "id": 84,
-                            "name": "Company 84"
-                        },
-                        {
-                            "id": 94,
-                            "name": "Company 94"
-                        }
-                    ]
+    const GET_USERS = gql`
+        query getUsers($page: Int!, $pageSize: Int!) {
+            Users(pagination: { page: $page, pageSize: $pageSize }) {
+                data {
+                    id
+                    username
+                    companies {
+                        id
+                        name
+                    }
                 }
-];
+                meta {
+                    pagination {
+                        totalOfPage
+                        page
+                        totalOfRecord
+                        pageSize
+                    }
+                }
+            }
+        }
+    `;
+    let users;
+    let pagination;
+    let loading;
 
+    let page = 1;
+    let pageSize = 10;
+
+    async function loadUsers(page, pageSize) {
+        console.log("loading users ", { page, pageSize });
+        const client = new ApolloClient({
+            uri: "http://localhost:4000/graphql",
+            cache: new InMemoryCache(),
+        });
+
+        const response = await client.query({
+            query: GET_USERS,
+            variables: { page, pageSize },
+        });
+        console.log({ response });
+        users = response.data.Users.data;
+        pagination = response.data.Users.meta.pagination;
+        loading = response.loading;
+        console.log("after state update", page);
+        return;
+    }
+    onMount(async () => loadUsers(page, pageSize));
 </script>
 
 <main>
-  <h1>Harvest Tech Challenge</h1>
-  <Users {users} />
+    <h1>Harvest Tech Challenge</h1>
+    {#if users}
+        <Users {users} />
+        <button
+            on:click={async () => {
+                if (page > 0) {
+                    await loadUsers(page - 1, pageSize);
+                    page = page - 1;
+                }
+                return;
+            }}>{"<"}</button
+        >
+        <span>{pagination.page} of {pagination.totalOfPage}</span>
+        <button
+            on:click={async () => {
+                console.log("firing onclick handler", {
+                    totalOfPage: pagination.totalOfPage,
+                    page,
+                });
+                if (pagination && pagination.totalOfPage > page) {
+                    await loadUsers(page + 1, pageSize);
+                    page = page + 1;
+                }
+            }}>{">"}</button
+        >
+    {:else}
+        <p>Loading...</p>
+    {/if}
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+    .logo {
+        height: 6em;
+        padding: 1.5em;
+        will-change: filter;
+        transition: filter 300ms;
+    }
+    .logo:hover {
+        filter: drop-shadow(0 0 2em #646cffaa);
+    }
+    .logo.svelte:hover {
+        filter: drop-shadow(0 0 2em #ff3e00aa);
+    }
+    .read-the-docs {
+        color: #888;
+    }
 </style>

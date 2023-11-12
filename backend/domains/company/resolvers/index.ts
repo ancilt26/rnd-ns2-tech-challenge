@@ -2,10 +2,10 @@ import { CompanyService } from "../service";
 export default {
   Query: {
     async Users(parent: any, args: any, context: any, info: any): Promise<any> {
-      const { filter, pagination: { limit, offset } } = args;
+      const { filter, pagination: { page, pageSize } } = args;
 
       const _companyService = new CompanyService();
-      const { data, pagination } = await _companyService.getUsers(filter, { limit, offset });
+      const { data, pagination } = await _companyService.getUsers(filter, { page, pageSize });
       return { data, meta: { pagination } };
     },
     async Companies(parent: any, args: any, context: any, info: any): Promise<any> {

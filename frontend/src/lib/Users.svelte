@@ -1,6 +1,5 @@
 <script lang="ts">
   export let users = [];
-
 </script>
 
 <table>
@@ -16,7 +15,7 @@
       <tr>
         <td>{user.id}</td>
         <td>{user.username}</td>
-        <td>{user.companies.map(c => c.name ).join(", ")}</td>
+        <td>{user.companies.map((c) => c.name).join(", ")}</td>
       </tr>
     {/each}
   </tbody>

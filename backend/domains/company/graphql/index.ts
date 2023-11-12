@@ -53,8 +53,8 @@ export default `
   }
 
   input PaginationInput {
-    limit: Int!
-    offset: Int!
+    page: Int!
+    pageSize: Int!
   }
 
   type Query {
