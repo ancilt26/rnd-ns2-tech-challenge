@@ -34,7 +34,6 @@
     let pageSize = 10;
 
     async function loadUsers(page, pageSize) {
-        console.log("loading users ", { page, pageSize });
         const client = new ApolloClient({
             uri: "http://localhost:4000/graphql",
             cache: new InMemoryCache(),
@@ -44,11 +43,9 @@
             query: GET_USERS,
             variables: { page, pageSize },
         });
-        console.log({ response });
         users = response.data.Users.data;
         pagination = response.data.Users.meta.pagination;
         loading = response.loading;
-        console.log("after state update", page);
         return;
     }
     onMount(async () => loadUsers(page, pageSize));
@@ -70,10 +67,6 @@
         <span>{pagination.page} of {pagination.totalOfPage}</span>
         <button
             on:click={async () => {
-                console.log("firing onclick handler", {
-                    totalOfPage: pagination.totalOfPage,
-                    page,
-                });
                 if (pagination && pagination.totalOfPage > page) {
                     await loadUsers(page + 1, pageSize);
                     page = page + 1;
