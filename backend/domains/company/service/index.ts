@@ -8,19 +8,25 @@ export class CompanyService {
   protected _roomRepo = new RoomRepo();
   protected _userRepo = new UserRepo();
 
-  async getUsers(filter: { username?: string}): Promise<any> {
-    return await this._userRepo.select(filter);
+  async getUsers(filter: { username?: string }, pagination: { page: number; pageSize: number }): Promise<any> {
+    const { page, pageSize } = pagination;
+    return await this._userRepo.selectWithPagination({ page, pageSize }, filter, undefined);
   }
 
-  async getUserCompanies(filter: { companyIds: number[]}): Promise<any> {
-    return await this._companyRepo.select(undefined, [{ fieldName:'id', data: filter.companyIds }]);
+  async createUser(username: string) {
+    const user = await this._userRepo.createUser(username)
+    return user
   }
 
-  async getCompanies(filter: { name?: string}): Promise<any> {
+  async getUserCompanies(filter: { companyIds: number[] }): Promise<any> {
+    return await this._companyRepo.select(undefined, [{ fieldName: 'id', data: filter.companyIds }]);
+  }
+
+  async getCompanies(filter: { name?: string }): Promise<any> {
     return await this._companyRepo.select(filter);
   }
 
-  async getCompanyRooms(filter: { name?: string, companyId?: number}): Promise<any> {    
+  async getCompanyRooms(filter: { name?: string, companyId?: number }): Promise<any> {
     return await this._roomRepo.select(filter);
   }
 
